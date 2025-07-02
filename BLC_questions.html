@@ -185,15 +185,15 @@
             const chartData = {
                 easeOfFinding: {
                     labels: ['1 (Difficult)', '2', '3', '4', '5 (Easy)'],
-                    data: [0, 1, 4, 3, 5]
+                    data: [0, 1, 4, 3, 6] /* Sums to 14 */
                 },
                 lastPurchase: {
                     labels: ['Last Week', 'Last Month', 'Longer'],
-                    data: [4, 5, 4]
+                    data: [4, 6, 4] /* Sums to 14 */
                 },
                 appFrequency: {
                     labels: ['Once a day', 'Few times a week', 'Few times a month', 'Less than above'],
-                    data: [3, 4, 4, 2]
+                    data: [3, 5, 4, 2] /* Sums to 14 */
                 }
             };
             
@@ -213,7 +213,7 @@
                     datasets: [{
                         label: 'Number of Responses',
                         data: chartData.easeOfFinding.data,
-                        backgroundColor: [chartColors.color4, chartColors.color1, chartColors.color2, chartColors.color3, chartColors.color4], /* Pink, Pink, Blue, Blue, Dark Blue */
+                        backgroundColor: [chartColors.color1, chartColors.color2, chartColors.color3, chartColors.color4, chartColors.color1], /* Light Blue, Dark Blue, Pink, Purple, Light Blue */
                         borderColor: 'rgba(255, 255, 255, 0)',
                         borderWidth: 1
                     }]
@@ -250,7 +250,7 @@
                     labels: chartData.lastPurchase.labels,
                     datasets: [{
                         data: chartData.lastPurchase.data,
-                        backgroundColor: [chartColors.color1, chartColors.color2, chartColors.color3], /* Blue, Dark Blue, Pink */
+                        backgroundColor: [chartColors.color1, chartColors.color2, chartColors.color3], /* Light Blue, Dark Blue, Pink */
                         hoverOffset: 4
                     }]
                 },
@@ -271,7 +271,7 @@
                     labels: chartData.appFrequency.labels,
                     datasets: [{
                         data: chartData.appFrequency.data,
-                        backgroundColor: [chartColors.color1, chartColors.color2, chartColors.color3, chartColors.color4], /* Blue, Dark Blue, Pink, Purple */
+                        backgroundColor: [chartColors.color1, chartColors.color2, chartColors.color3, chartColors.color4], /* Light Blue, Dark Blue, Pink, Purple */
                         hoverOffset: 4
                     }]
                 },
