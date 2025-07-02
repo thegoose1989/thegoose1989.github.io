@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Light Card: User Feedback Dashboard</title>
+    <!-- Chosen Palette: Calm Harmony (Slate background, white cards, blue accents) -->
+    <!-- Application Structure Plan: A single-page dashboard layout. Starts with an executive summary, followed by interactive charts for key metrics. The core is a 'User Voice' section with themed cards for qualitative feedback (positives vs. opportunities), where clicking reveals detailed insights in a modal. Concludes with strategic recommendations. This structure prioritizes a top-down information flow, from summary to data to action, making the report's findings easily digestible and explorable. -->
+    <!-- Visualization & Content Choices: Quantitative data (Ease of Finding, Purchase Frequency, App Usage) will use Chart.js bar and donut charts for clear, quick comparison. Goal: Inform/Compare. Qualitative data (Favorites, Frustrations, etc.) will be presented in interactive HTML cards with themed tags instead of static word clouds. Goal: Organize/Inform. Clicking these cards will trigger modals with detailed text. This is more structured and interactive than a word cloud and allows for deeper exploration without cluttering the initial view. Library: Chart.js. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 320px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-2xl sm:text-3xl font-bold text-blue-600">Blue Light Card: User Feedback Dashboard</h1>
+            <p class="mt-1 text-slate-600">An interactive summary of user sentiment and key engagement metrics.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Key Findings Summary -->
+        <section id="summary" class="mb-12">
+            <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">Key Findings Summary</h2>
+                <p class="text-slate-600">The feedback indicates a mixed user experience. While the digital membership card and the general concept of appreciation are highly valued, users frequently struggle with **finding relevant discounts** due to poor search functionality and a lack of personalization. Technical glitches and slow loading times also hinder the experience. The data suggests a strong desire for a more tailored and efficient app experience.</p>
+            </div>
+        </section>
+
+        <!-- Quantitative Metrics -->
+        <section id="metrics" class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-center text-slate-800">Engagement Metrics at a Glance</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Ease of Finding Discounts -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-center mb-4">Ease of Finding Discounts</h3>
+                    <div class="chart-container">
+                        <canvas id="easeOfFindingChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Last Purchase -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-center mb-4">Last Purchase Using BLC</h3>
+                    <div class="chart-container">
+                        <canvas id="lastPurchaseChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- App Opening Frequency -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-center mb-4">App Opening Frequency</h3>
+                     <div class="chart-container">
+                        <canvas id="appFrequencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Qualitative Insights -->
+        <section id="user-voice" class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-center text-slate-800">The User Voice: Key Themes</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Positives Column -->
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h3 class="text-lg font-bold flex items-center mb-3">
+                             <span class="text-green-500 mr-2">👍</span> Favorite Features
+                        </h3>
+                        <p class="text-slate-600 mb-4">Users value convenience and flexibility in how they access and use discounts.</p>
+                        <button data-modal-target="favorite-features-modal" class="modal-button bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">View Details</button>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h3 class="text-lg font-bold flex items-center mb-3">
+                            <span class="text-green-500 mr-2">❤️</span> Feeling Appreciated
+                        </h3>
+                        <p class="text-slate-600 mb-4">Many users feel recognized, but the value perception of discounts impacts this sentiment.</p>
+                        <button data-modal-target="appreciated-modal" class="modal-button bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Opportunities Column -->
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h3 class="text-lg font-bold flex items-center mb-3">
+                             <span class="text-amber-500 mr-2">😠</span> Top Frustrations
+                        </h3>
+                        <p class="text-slate-600 mb-4">Technical performance and discoverability are the primary sources of user frustration.</p>
+                        <button data-modal-target="frustrations-modal" class="modal-button bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">View Details</button>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-500">
+                        <h3 class="text-lg font-bold flex items-center mb-3">
+                             <span class="text-amber-500 mr-2">💡</span> Most Requested Changes
+                        </h3>
+                        <p class="text-slate-600 mb-4">Users overwhelmingly desire a more personalized and efficient app experience.</p>
+                        <button data-modal-target="changes-modal" class="modal-button bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusion">
+            <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">Conclusion & Strategic Recommendations</h2>
+                <p class="text-slate-600">The Blue Light Card app provides a valued service, particularly through its digital card and the sense of appreciation it conveys. To significantly increase user engagement and daily active usage, the product team should prioritize enhancing **personalization and search capabilities** to make discount discovery effortless. Addressing **technical performance issues** and streamlining the **redemption process** (especially for cross-device use) will also be critical for fostering a more habitual and satisfying user experience.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modals -->
+    <div id="favorite-features-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg relative">
+            <h3 class="text-xl font-bold mb-4">Favorite Features: Detailed Themes</h3>
+            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                <li><strong>Digital Card:</strong> The convenience of having the card on their phone is a major highlight.</li>
+                <li><strong>QR Code Discounts:</strong> Users find QR codes easy and simple to use for in-store redemptions.</li>
+                <li><strong>Flexibility:</strong> The ability to use discounts both online and in-store is highly valued.</li>
+                <li><strong>Auto-Emailed Codes:</strong> The feature that automatically emails discount codes is seen as a convenient touch.</li>
+            </ul>
+            <button class="close-button absolute top-4 right-4 text-slate-500 hover:text-slate-800 text-2xl">&times;</button>
+        </div>
+    </div>
+    
+    <div id="appreciated-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg relative">
+            <h3 class="text-xl font-bold mb-4">Feeling Appreciated: Detailed Themes</h3>
+             <ul class="list-disc list-inside space-y-2 text-slate-700">
+                <li><strong>Positive Recognition:</strong> Many users explicitly state they "feel appreciated" and see it as a "nice perk" and a form of recognition for their service.</li>
+                <li><strong>Mixed Feelings on Value:</strong> Some feel the appreciation is diminished by small discount percentages (e.g., 3-4%) which they feel are not significant.</li>
+                 <li><strong>Generalized vs. Targeted:</strong> The sentiment of appreciation is lower when offers feel too general or not specifically targeted to their profession or interests.</li>
+            </ul>
+            <button class="close-button absolute top-4 right-4 text-slate-500 hover:text-slate-800 text-2xl">&times;</button>
+        </div>
+    </div>
+
+    <div id="frustrations-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg relative">
+            <h3 class="text-xl font-bold mb-4">Top Frustrations: Detailed Themes</h3>
+            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                <li><strong>Search Functionality:</strong> Users are frustrated by long, irrelevant search results and a lack of effective filtering options.</li>
+                <li><strong>Technical Glitches:</strong> The app is described as "glitchy," with frequent logouts and UI bugs (e.g., search bar hiding).</li>
+                <li><strong>Performance:</strong> Slow loading times for the home screen images and search function are common complaints.</li>
+                <li><strong>Connectivity Issues:</strong> Users report problems when they have poor internet connections.</li>
+                 <li><strong>Unclear Redemption:</strong> Confusion around when a link must be used to get a discount online.</li>
+            </ul>
+            <button class="close-button absolute top-4 right-4 text-slate-500 hover:text-slate-800 text-2xl">&times;</button>
+        </div>
+    </div>
+
+    <div id="changes-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg relative">
+            <h3 class="text-xl font-bold mb-4">Most Requested Changes: Detailed Themes</h3>
+             <ul class="list-disc list-inside space-y-2 text-slate-700">
+                <li><strong>Personalization:</strong> The most frequent request is for tailored offers, personalized homepages ("like Netflix"), and suggestions based on usage history.</li>
+                <li><strong>Favorites & Notifications:</strong> Users want to save their favorite retailers and receive notifications when new offers from them are available.</li>
+                <li><strong>Improved Search & Filters:</strong> A direct request for better search functionality with more comprehensive filtering.</li>
+                <li><strong>Biometric Login:</strong> A desire for easier and faster login using biometrics.</li>
+                 <li><strong>Cross-Device Usability:</strong> A better way to use codes on a laptop that are generated in the mobile app (e.g., "vanity codes").</li>
+            </ul>
+            <button class="close-button absolute top-4 right-4 text-slate-500 hover:text-slate-800 text-2xl">&times;</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartData = {
+                easeOfFinding: {
+                    labels: ['1 (Difficult)', '2', '3', '4', '5 (Easy)'],
+                    data: [0, 1, 4, 3, 5]
+                },
+                lastPurchase: {
+                    labels: ['Last Week', 'Last Month', 'Longer'],
+                    data: [4, 5, 4]
+                },
+                appFrequency: {
+                    labels: ['Once a day', 'Few times a week', 'Few times a month', 'Less than above'],
+                    data: [3, 4, 4, 2]
+                }
+            };
+            
+            const chartColors = {
+                blue: 'rgba(59, 130, 246, 0.7)',
+                green: 'rgba(34, 197, 94, 0.7)',
+                purple: 'rgba(139, 92, 246, 0.7)',
+                amber: 'rgba(245, 158, 11, 0.7)',
+                sky: 'rgba(14, 165, 233, 0.7)'
+            };
+
+            // Ease of Finding Chart (Bar)
+            const easeCtx = document.getElementById('easeOfFindingChart').getContext('2d');
+            new Chart(easeCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.easeOfFinding.labels,
+                    datasets: [{
+                        label: 'Number of Responses',
+                        data: chartData.easeOfFinding.data,
+                        backgroundColor: [chartColors.amber, chartColors.amber, chartColors.sky, chartColors.green, chartColors.green],
+                        borderColor: 'rgba(255, 255, 255, 0)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.raw} Responses`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                             grid: { display: false }
+                        },
+                         y: {
+                             grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Last Purchase Chart (Doughnut)
+            const purchaseCtx = document.getElementById('lastPurchaseChart').getContext('2d');
+            new Chart(purchaseCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartData.lastPurchase.labels,
+                    datasets: [{
+                        data: chartData.lastPurchase.data,
+                        backgroundColor: [chartColors.green, chartColors.sky, chartColors.amber],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+            
+            // App Frequency Chart (Doughnut)
+            const frequencyCtx = document.getElementById('appFrequencyChart').getContext('2d');
+            new Chart(frequencyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartData.appFrequency.labels,
+                    datasets: [{
+                        data: chartData.appFrequency.data,
+                        backgroundColor: [chartColors.green, chartColors.sky, chartColors.amber, 'rgba(107, 114, 128, 0.7)'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Modal Logic
+            const modalButtons = document.querySelectorAll('.modal-button');
+            const closeButtons = document.querySelectorAll('.close-button');
+            const modals = document.querySelectorAll('.modal');
+
+            modalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetModal = document.getElementById(button.dataset.modalTarget);
+                    if (targetModal) {
+                        targetModal.classList.remove('hidden');
+                        targetModal.classList.add('flex');
+                    }
+                });
+            });
+
+            const closeModal = (modal) => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            };
+
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    closeModal(button.closest('.modal'));
+                });
+            });
+
+            modals.forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
