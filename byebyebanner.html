@@ -43,12 +43,12 @@
                     <!-- Inner green arc -->
                     <circle cx="50" cy="50" r="33" fill="none" stroke="#22c55e" stroke-width="7" transform="rotate(-12, 50, 50)"/>
                     
-                    <!-- Path for the curved text -->
-                    <path id="curve" fill="none" d="M 50 90 A 40 40 0 1 0 50 10 A 40 40 0 1 0 50 90"/>
+                    <!-- Path for the curved text that goes anti-clockwise from the left -->
+                    <path id="curve" fill="none" d="M 50,50 m -40,0 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0" />
                     
                     <!-- The actual text following the path -->
                     <text class="font-bold text-sm" text-anchor="start" fill="#22c55e">
-                        <textPath href="#curve" startOffset="75%" >
+                        <textPath href="#curve" startOffset="0%" >
                             #OPENTOWORK
                         </textPath>
                     </text>
@@ -67,7 +67,7 @@
         </div>
 
         <!-- Action Button -->
-        <div class="mt-40 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
+        <div class="mt-64 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
             <button id="throw-button" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
                 Throw it in the bin!
             </button>
