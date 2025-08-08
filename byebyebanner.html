@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goodbye, #OPENTOWORK</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+        }
+
+        /* Keyframes for the animation */
+        @keyframes throwAway {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(150px, -200px) rotate(90deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(250px, 450px) rotate(180deg) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shakeBin {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .animated-banner {
+            animation: throwAway 1s forwards;
+        }
+
+        .shake-bin {
+            animation: shakeBin 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto flex flex-col items-center justify-center space-y-8">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
+            Goodbye, #OPENTOWORK!
+        </h1>
+        <p class="text-lg text-gray-300 text-center max-w-2xl">
+            Click the button below to celebrate your new beginning.
+        </p>
+
+        <!-- Main Animation Area -->
+        <div class="relative w-full max-w-sm h-64 flex items-center justify-center">
+            <!-- Profile Image -->
+            <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-gray-600 shadow-xl">
+                <img id="profile-image" src="https://storage.googleapis.com/gcs-workspace-user-uploaded-files/c5c56c70-22c9-4a94-8798-75661b40ec47/image_42021a.png-08d607fd-1027-4db6-b6ad-0e0fe9b6d480"
+                     alt="Profile Picture" class="w-full h-full object-cover">
+            </div>
+
+            <!-- The #OPENTOWORK Banner -->
+            <div id="open-to-work-banner" class="absolute inset-0 w-full h-full">
+                <!-- Outer green arc -->
+                <div class="absolute w-full h-full rounded-full border-4 border-green-500 transform -rotate-12"></div>
+                <!-- Inner green arc -->
+                <div class="absolute inset-2 rounded-full border-4 border-green-500 transform -rotate-12"></div>
+                <!-- The actual text element. Positioned absolutely to rotate easily. -->
+                <div id="banner-text" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 text-center">
+                    <p class="font-bold text-green-500 uppercase tracking-widest text-sm transform -rotate-[100deg] origin-[0%_150%]">#OPENTOWORK</p>
+                </div>
+            </div>
+
+            <!-- The Bin -->
+            <div id="bin" class="absolute bottom-[-100px] right-20 transform scale-50">
+                <div class="bg-gray-600 w-20 h-24 rounded-t-lg rounded-b-xl shadow-lg relative">
+                    <!-- Bin Lid -->
+                    <div id="bin-lid" class="absolute top-[-10px] left-[-5px] w-24 h-4 bg-gray-500 rounded-t-lg rounded-b-sm transform transition-transform duration-300 origin-bottom-left"></div>
+                    <!-- Bin Handle -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 border-4 border-gray-400 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="mt-12 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <button id="throw-button" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+                Throw it in the bin!
+            </button>
+            <button id="reset-button" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50">
+                Reset
+            </button>
+        </div>
+
+        <!-- Success Message -->
+        <div id="success-message" class="mt-8 text-center text-xl font-semibold text-green-400 hidden">
+            Congratulations on the new job!
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const throwButton = document.getElementById('throw-button');
+            const resetButton = document.getElementById('reset-button');
+            const bannerText = document.getElementById('banner-text');
+            const bin = document.getElementById('bin');
+            const binLid = document.getElementById('bin-lid');
+            const successMessage = document.getElementById('success-message');
+            const profileImage = document.getElementById('profile-image');
+
+            // Initial state of the banner
+            const initialBannerStyle = bannerText.cloneNode(true);
+            const initialImageStyle = profileImage.cloneNode(true);
+
+            throwButton.addEventListener('click', () => {
+                // Prevent multiple clicks
+                throwButton.disabled = true;
+
+                // Animate the banner
+                bannerText.style.position = 'absolute';
+                bannerText.classList.add('animated-banner');
+                
+                // Animate the bin
+                binLid.style.transform = 'rotate(-60deg)';
+                setTimeout(() => {
+                    binLid.style.transform = 'rotate(0deg)';
+                    bin.classList.add('shake-bin');
+                }, 700);
+
+                // Show success message and reset button after animation finishes
+                setTimeout(() => {
+                    successMessage.classList.remove('hidden');
+                    resetButton.classList.remove('hidden');
+                    bin.classList.remove('shake-bin');
+                }, 2000);
+            });
+
+            resetButton.addEventListener('click', () => {
+                // Reset to initial state
+                bannerText.classList.remove('animated-banner');
+                bannerText.style.position = '';
+                
+                // Re-enable the button
+                throwButton.disabled = false;
+                successMessage.classList.add('hidden');
+                
+                // A small delay to ensure CSS classes are fully removed before re-adding
+                setTimeout(() => {
+                    // This is a simple workaround to re-create the element with its original state
+                    const parent = bannerText.parentElement;
+                    parent.innerHTML = '';
+                    parent.appendChild(initialBannerStyle.cloneNode(true));
+                    bannerText = document.getElementById('banner-text'); // Re-assign the variable
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
