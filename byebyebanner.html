@@ -39,16 +39,16 @@
                 <!-- SVG for the curved text and circles -->
                 <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full">
                     <!-- Outer green arc -->
-                    <circle cx="50" cy="50" r="48" fill="none" stroke="#22c55e" stroke-width="2" transform="rotate(-12, 50, 50)"/>
+                    <circle cx="50" cy="50" r="48" fill="none" stroke="#22c55e" stroke-width="5" transform="rotate(-12, 50, 50)"/>
                     <!-- Inner green arc -->
-                    <circle cx="50" cy="50" r="44" fill="none" stroke="#22c55e" stroke-width="2" transform="rotate(-12, 50, 50)"/>
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="#22c55e" stroke-width="5" transform="rotate(-12, 50, 50)"/>
                     
                     <!-- Path for the curved text -->
                     <path id="curve" fill="none" d="M 20,50 a 30,30 0 1,1 60,0"/>
                     
                     <!-- The actual text following the path -->
                     <text class="font-bold text-sm" text-anchor="middle" dominant-baseline="middle" fill="#22c55e">
-                        <textPath href="#curve" startOffset="50%" transform="rotate(-20, 50, 50)">
+                        <textPath href="#curve" startOffset="50%" transform="rotate(-90, 50, 50)">
                             #OPENTOWORK
                         </textPath>
                     </text>
@@ -67,7 +67,7 @@
         </div>
 
         <!-- Action Button -->
-        <div class="mt-12 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
+        <div class="mt-24 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
             <button id="throw-button" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
                 Throw it in the bin!
             </button>
