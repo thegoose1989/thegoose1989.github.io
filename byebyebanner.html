@@ -11,39 +11,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
         }
-
-        /* Keyframes for the animation */
-        @keyframes throwAway {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translate(150px, -200px) rotate(90deg);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translate(250px, 450px) rotate(180deg) scale(0);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes shakeBin {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-
         .animated-banner {
-            animation: throwAway 1s forwards;
-        }
-
-        .shake-bin {
-            animation: shakeBin 0.5s;
+            transition: transform 1s, opacity 1s, scale 1s;
         }
     </style>
 </head>
@@ -60,7 +30,7 @@
         <div class="relative w-full max-w-sm h-64 flex items-center justify-center">
             <!-- Profile Image -->
             <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-gray-600 shadow-xl">
-                <img id="profile-image" src="https://storage.googleapis.com/gcs-workspace-user-uploaded-files/c5c56c70-22c9-4a94-8798-75661b40ec47/image_42021a.png-08d607fd-1027-4db6-b6ad-0e0fe9b6d480"
+                <img id="profile-image" src="https://placehold.co/640x640/gray/white?text=Profile+Pic"
                      alt="Profile Picture" class="w-full h-full object-cover">
             </div>
 
@@ -71,13 +41,13 @@
                 <!-- Inner green arc -->
                 <div class="absolute inset-2 rounded-full border-4 border-green-500 transform -rotate-12"></div>
                 <!-- The actual text element. Positioned absolutely to rotate easily. -->
-                <div id="banner-text" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 text-center">
+                <div id="banner-text" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 text-center animated-banner">
                     <p class="font-bold text-green-500 uppercase tracking-widest text-sm transform -rotate-[100deg] origin-[0%_150%]">#OPENTOWORK</p>
                 </div>
             </div>
 
             <!-- The Bin -->
-            <div id="bin" class="absolute bottom-[-100px] right-20 transform scale-50">
+            <div id="bin" class="absolute bottom-[-100px] right-20 transform scale-50 transition-all">
                 <div class="bg-gray-600 w-20 h-24 rounded-t-lg rounded-b-xl shadow-lg relative">
                     <!-- Bin Lid -->
                     <div id="bin-lid" class="absolute top-[-10px] left-[-5px] w-24 h-4 bg-gray-500 rounded-t-lg rounded-b-sm transform transition-transform duration-300 origin-bottom-left"></div>
@@ -92,7 +62,7 @@
             <button id="throw-button" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
                 Throw it in the bin!
             </button>
-            <button id="reset-button" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50">
+            <button id="reset-button" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50 hidden">
                 Reset
             </button>
         </div>
@@ -111,52 +81,53 @@
             const bin = document.getElementById('bin');
             const binLid = document.getElementById('bin-lid');
             const successMessage = document.getElementById('success-message');
-            const profileImage = document.getElementById('profile-image');
+            const bannerContainer = document.getElementById('open-to-work-banner');
 
-            // Initial state of the banner
-            const initialBannerStyle = bannerText.cloneNode(true);
-            const initialImageStyle = profileImage.cloneNode(true);
+            // Set up initial state variables
+            let isThrown = false;
+            let originalBannerTextHTML = bannerContainer.innerHTML;
+            
+            const shakeBin = () => {
+                bin.classList.add('animate-shake');
+                setTimeout(() => {
+                    bin.classList.remove('animate-shake');
+                }, 500);
+            };
 
             throwButton.addEventListener('click', () => {
-                // Prevent multiple clicks
-                throwButton.disabled = true;
-
-                // Animate the banner
-                bannerText.style.position = 'absolute';
-                bannerText.classList.add('animated-banner');
+                if (isThrown) return;
+                isThrown = true;
                 
-                // Animate the bin
+                // Animate the banner
+                bannerContainer.style.transition = 'transform 1s ease-in, opacity 1s ease-in, scale 0.5s ease-in';
+                bannerContainer.style.transform = 'translate(250px, 450px) rotate(180deg) scale(0)';
+                bannerContainer.style.opacity = '0';
+                
+                // Animate the bin lid
                 binLid.style.transform = 'rotate(-60deg)';
                 setTimeout(() => {
                     binLid.style.transform = 'rotate(0deg)';
-                    bin.classList.add('shake-bin');
                 }, 700);
 
                 // Show success message and reset button after animation finishes
                 setTimeout(() => {
                     successMessage.classList.remove('hidden');
                     resetButton.classList.remove('hidden');
-                    bin.classList.remove('shake-bin');
-                }, 2000);
+                    throwButton.classList.add('hidden');
+                }, 1000);
             });
 
             resetButton.addEventListener('click', () => {
-                // Reset to initial state
-                bannerText.classList.remove('animated-banner');
-                bannerText.style.position = '';
+                isThrown = false;
                 
-                // Re-enable the button
-                throwButton.disabled = false;
+                // Reset banner and bin
+                bannerContainer.style.transition = 'none';
+                bannerContainer.style.transform = 'none';
+                bannerContainer.style.opacity = '1';
+                
                 successMessage.classList.add('hidden');
-                
-                // A small delay to ensure CSS classes are fully removed before re-adding
-                setTimeout(() => {
-                    // This is a simple workaround to re-create the element with its original state
-                    const parent = bannerText.parentElement;
-                    parent.innerHTML = '';
-                    parent.appendChild(initialBannerStyle.cloneNode(true));
-                    bannerText = document.getElementById('banner-text'); // Re-assign the variable
-                }, 100);
+                resetButton.classList.add('hidden');
+                throwButton.classList.remove('hidden');
             });
         });
     </script>
