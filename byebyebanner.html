@@ -28,19 +28,9 @@
     </div>
 
     <!-- Main Animation and CTA Area -->
-    <div class="flex flex-col md:flex-row items-center justify-center relative w-full max-w-6xl mt-12">
-        <!-- Action Button Container -->
-        <div class="flex flex-col items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 md:flex-row md:w-1/3">
-            <button id="throw-button" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
-                Throw it in the bin!
-            </button>
-            <button id="reset-button" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50 hidden">
-                Reset
-            </button>
-        </div>
-
+    <div class="flex flex-col items-center justify-center relative w-full max-w-6xl mt-12">
         <!-- Profile Image and Banner -->
-        <div class="relative w-full max-w-sm h-64 flex items-center justify-center md:w-2/3">
+        <div class="relative w-full max-w-sm h-64 flex items-center justify-center">
             <!-- Profile Image -->
             <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-gray-600 shadow-xl">
                 <img id="profile-image" src="https://placehold.co/640x640/gray/white?text=Profile+Pic"
@@ -60,13 +50,23 @@
                     <path id="curve" fill="none" d="M 50 10 A 40 40 0 1 0 50 90" />
                     
                     <!-- The actual text following the path -->
-                    <text class="font-bold text-lg" text-anchor="middle" fill="#22c55e">
+                    <text class="font-bold text-lg" text-anchor="middle" fill="white">
                         <textPath href="#curve" startOffset="25%" >
                             #OPENTOWORK
                         </textPath>
                     </text>
                 </svg>
             </div>
+        </div>
+
+        <!-- Action Button Container -->
+        <div class="flex flex-col items-center mt-8">
+            <button id="throw-button" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+                Throw it in the bin!
+            </button>
+            <button id="reset-button" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50 hidden">
+                Reset
+            </button>
         </div>
     </div>
     
@@ -79,7 +79,6 @@
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 border-4 border-gray-400 rounded-full"></div>
         </div>
     </div>
-
 
     <!-- Success Message -->
     <div id="success-message" class="mt-8 text-center text-xl font-semibold text-green-400 hidden">
